@@ -141,10 +141,58 @@ STEAMGRIDDB_API_KEY=      # optional — hi-res game icons
 FFMPEG_PATH=              # optional — full path to ffmpeg if not on PATH
 ```
 
-### Running 24/7
+### Running 24/7 with pm2 (Windows / PowerShell)
 
-- **Windows**: Task Scheduler (run `node index.js` at logon), or a service via [`nssm`](https://nssm.cc/).
-- **Linux/macOS**: `pm2 start index.js --name steam-widget`, a `systemd` unit, or `tmux`/`screen`.
+[pm2](https://pm2.keymetrics.io/) keeps the script alive in the background, restarts it if it crashes, and can launch it automatically when Windows boots.
+
+**1. Install pm2 (once):**
+
+```powershell
+npm install -g pm2
+```
+
+**2. Start the widget as a managed process:**
+
+```powershell
+cd F:\path\to\discord-widget-steam
+pm2 start index.js --name discord-widget2
+```
+
+**3. Check that it's running and watch the logs:**
+
+```powershell
+pm2 status
+pm2 logs discord-widget2
+```
+
+You should see the usual startup lines (`ffmpeg OK`, `Refreshing widget...`). Press `Ctrl+C` to exit the log view — the process keeps running in the background.
+
+**4. Make it start automatically when Windows boots:**
+
+> ⚠️ `pm2 startup` does **not** work natively on Windows. Use the
+> [`pm2-windows-startup`](https://www.npmjs.com/package/pm2-windows-startup) helper instead:
+
+```powershell
+npm install -g pm2-windows-startup
+pm2-startup install
+pm2 save
+```
+
+`pm2 save` snapshots the current process list (including `discord-widget2`); `pm2-startup` makes pm2 restore that snapshot on every boot. Done — the widget now survives crashes **and** reboots.
+
+**Day-to-day commands:**
+
+```powershell
+pm2 status                     # list processes and their state
+pm2 logs discord-widget2       # live logs
+pm2 restart discord-widget2    # restart (e.g. after editing .env or updating files)
+pm2 stop discord-widget2       # stop without removing
+pm2 delete discord-widget2     # remove from pm2 entirely (then pm2 save to persist)
+```
+
+> Tip: whenever you add/remove processes and want that reflected at boot, run `pm2 save` again.
+
+**Linux/macOS**: same `pm2` commands work, and native `pm2 startup` is supported (run it and follow the printed instruction, then `pm2 save`). Alternatives: a `systemd` unit or `tmux`/`screen`.
 
 ---
 
