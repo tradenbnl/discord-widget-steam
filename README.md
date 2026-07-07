@@ -10,12 +10,6 @@ It runs in a loop, pulls fresh data from the Steam Web API (plus your public pro
 
 ## ✨ Showcase
 
-<img src="assets/media01.gif" style="max-width: 5%; height: auto;">
-<img src="assets/media01.gif" style="max-width: 5%; height: auto;">
-<br>
-<img src="assets/media01.gif" style="max-width: 49%; height: auto;">
-<img src="assets/media01.gif" style="max-width: 49%; height: auto;">
-
 <table cellpadding="15">
   <tr>
     <td width="25%"><img src="assets/media01.gif"></td>
@@ -26,6 +20,7 @@ It runs in a loop, pulls fresh data from the Steam Web API (plus your public pro
     <td width="25%"><img src="assets/media05.gif"></td>
   </tr>
 </table>
+
 ---
 
 ## ✨ Features
