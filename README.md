@@ -17,7 +17,7 @@ It runs in a loop, pulls fresh data from the Steam Web API (plus your public pro
 - **Games** — total games owned ("X games owned"), with a public-profile fallback if the API returns nothing.
 - **Most played** — your top game by total playtime, as `Most Played: <name>`, with a **high-resolution icon** (512×512+) from SteamGridDB.
 - **Now playing / last played** — detects the game you're playing right now, or the last one you played (via `rtime_last_played`, which updates fast), with its icon. Status text: `Playing now` / `Last played`.
-- **Account age** — creation date, human age ("6 years and 9 months"), and `Member Since: <year>`.
+- **Account age** — creation date ("6 years and 9 months"), and `Member Since: <year>`.
 - **Ban status** — `Ban Status: Clean (No bans)` or a breakdown (VAC / game / community / trade), with a generated green-check or red-X icon.
 - **Self-diagnosing avatar pipeline** — logs every step (`[avatar]` prefix), verifies the output GIF actually has multiple frames, saves a local preview to `data/avatar-preview.gif` so you can check the animation yourself, and checks ffmpeg availability at startup.
 - **Smart caching** — composed images (level icon, avatar, ban icons) are uploaded once to [Catbox](https://catbox.moe) and reused until the underlying data changes (cached in `data/*.json`). Restart-safe.
@@ -72,11 +72,14 @@ Create these **Data Fields** in the Discord Developer Portal widget editor (Game
 | Key | Where to get it | Required |
 | --- | --- | --- |
 | Steam Web API key | <https://steamcommunity.com/dev/apikey> | ✅ |
-| SteamID64 (17 digits) | <https://steamid.io> (paste your profile URL) | ✅ |
+| SteamID64 (17 digits) | <https://steamid.io> (paste your steam profile URL) | ✅ |
 | Discord Application ID | [Developer Portal](https://discord.com/developers/applications) → your app | ✅ |
 | Discord User ID | Discord → Settings → Advanced → Developer Mode → right-click yourself → Copy User ID | ✅ |
 | Discord Bot Token | Developer Portal → your app → Bot → Reset Token | ✅ |
 | SteamGridDB API key | <https://www.steamgriddb.com/profile/preferences/api> | Optional (hi-res game icons; falls back to Steam's 32×32 icons) |
+
+- **Steam account**: <https://store.steampowered.com/account/> Log into your Steam account and go to **Account Details**. There you should be able to see your SteamID64 Under your Name
+
 
 ### Steam privacy settings
 
@@ -137,11 +140,11 @@ DISCORD_APP_ID=           # required
 DISCORD_USER_ID=          # required
 DISCORD_BOT_TOKEN=        # required — keep it secret!
 DISCORD_WIDGET_USERNAME=  # optional — widget title; defaults to Steam name
-STEAMGRIDDB_API_KEY=      # optional — hi-res game icons
+STEAMGRIDDB_API_KEY=      # optional — hi-res game icons - I recommend you to set this up
 FFMPEG_PATH=              # optional — full path to ffmpeg if not on PATH
 ```
 
-### Running 24/7 with pm2 (Windows / PowerShell)
+### Running 24/7 with pm2 (Windows / PowerShell)  Recommended but **Optional**
 
 [pm2](https://pm2.keymetrics.io/) keeps the script alive in the background, restarts it if it crashes, and can launch it automatically when Windows boots.
 
