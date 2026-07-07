@@ -6,6 +6,21 @@ It runs in a loop, pulls fresh data from the Steam Web API (plus your public pro
 
 > Based on [Chloe Cinders' widget guide](https://chloecinders.com/blog/discord-widgets) and the polling approach from [ezxmora/discord-widget](https://github.com/ezxmora/discord-widget).
 
+(assets/media06.gif)
+
+## ✨ Showcase
+
+<table cellpadding="15">
+  <tr>
+    <td width="25%"><img src="assets/media01.gif"></td>
+    <td width="25%"><img src="assets/media02.gif"></td>
+  </tr>
+  <tr>
+    <td width="25%"><img src="assets/media04.gif"></td>
+    <td width="25%"><img src="assets/media05.gif"></td>
+  </tr>
+</table>
+
 ---
 
 ## ✨ Features
@@ -90,11 +105,8 @@ For game data to be available: Steam → your profile → **Edit Profile → Pri
 - **My profile**: Public
 - **Game details**: Public (this one is separate from the profile setting — without it, `total_games` and `most_played` will be empty)
 
-<details>
-  <summary>✨ **Hint**</summary>
-  <br>
-  <img src="assets/media08.png"/>
-</details>
+  ![How to](assets/media07.gif)
+
 
 
 ### Discord widget setup (one-time)
@@ -110,7 +122,7 @@ Follow [Chloe Cinders' guide](https://chloecinders.com/blog/discord-widgets) to:
    <details>
      <summary>✨ **Like This**</summary>
      <br>
-     <img src="assets/media08">
+     <img src="assets/media08.PNG"/>
    </details>
 4. Add the widget to your profile (see the guide's last chapter).
  
