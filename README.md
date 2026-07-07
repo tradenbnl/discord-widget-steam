@@ -15,6 +15,14 @@ It runs in a loop, pulls fresh data from the Steam Web API (plus your public pro
 <img src="assets/media04.gif" style="max-width: 24.5%; height: auto;">
 <img src="assets/media05.gif" style="max-width: 24.5%; height: auto;">
 
+<table cellpadding="10">
+  <tr>
+    <td width="25%"><img src="assets/media01.gif"></td>
+    <td width="25%"><img src="assets/media02.gif"></td>
+    <td width="25%"><img src="assets/media04.gif"></td>
+    <td width="25%"><img src="assets/media05.gif"></td>
+  </tr>
+</table>
 ---
 
 ## ✨ Features
