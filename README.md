@@ -25,7 +25,7 @@ It runs in a loop, pulls fresh data from the Steam Web API (plus your public pro
 
 ---
 
-## 🧩 Widget Data Fields <div id="DataFields"></div>
+## 🧩 Widget Data Fields
 
 Create these **Data Fields** in the Discord Developer Portal widget editor (Games → Widget → your widget). Names must match **exactly**. Set each field's *Value Type* to **User Data**.
 
@@ -101,7 +101,7 @@ For game data to be available: Steam → your profile → **Edit Profile → Pri
  
 Follow [Chloe Cinders' guide](https://chloecinders.com/blog/discord-widgets) to:
 1. Create the application and enable the **Social SDK**.
-2. Build the widget in the editor and add the [Data Fields](#DataFields) from the table above. **Save AND Publish.**
+2. Build the widget in the editor and add the [Data Fields](#-widget-data-fields) from the table above. **Save AND Publish.**
 3. Authorize your app: add `https://discord.com` as an OAuth2 Redirect in the Developer Portal, then open this URL in your browser (replace `YOUR_APP_ID`) and click Authorize:
 ```
    https://discord.com/oauth2/authorize?client_id=YOUR_APP_ID&response_type=token&redirect_uri=https%3A%2F%2Fdiscord.com&scope=openid+sdk.social_layer
