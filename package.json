@@ -1,0 +1,20 @@
+{
+  "name": "steam-discord-widget",
+  "version": "1.0.0",
+  "description": "Updates a Discord Profile Widget (v2) with Steam stats: username, avatar, account age, level (with a Steam-style composite image), badges, and last game played.",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "sharp": "^0.33.5"
+  },
+  "allowScripts": {
+    "sharp@0.33.5": true
+  }
+}
