@@ -106,7 +106,6 @@ For game data to be available: Steam → your profile → **Edit Profile → Pri
 - **Game details**: Public (this one is separate from the profile setting — without it, `total_games` and `most_played` will be empty)
 
 <details>
-  <summary>✨ **Hint**</summary>
   <br>
   <img src="assets/media07.gif"/>
 </details>
