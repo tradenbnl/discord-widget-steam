@@ -91,22 +91,30 @@ For game data to be available: Steam → your profile → **Edit Profile → Pri
 - **Game details**: Public (this one is separate from the profile setting — without it, `total_games` and `most_played` will be empty)
 
 <details>
-  <summary>✨ Hint</summary>
+  <summary>✨ **Hint**</summary>
   <br>
   <img src="assets/media07.gif"/>
 </details>
 
 
 ### Discord widget setup (one-time)
-
+ 
 Follow [Chloe Cinders' guide](https://chloecinders.com/blog/discord-widgets) to:
 1. Create the application and enable the **Social SDK**.
-2. Build the widget in the editor and add the Data Fields from the table above.
-3. Authorize your app with the `openid` + `sdk.social_layer` OAuth2 scopes (use `response_type=token`).
-4. Add the widget to your profile.
-
+2. Build the widget in the editor and add the Data Fields from the table above. **Save AND Publish.**
+3. Authorize your app: add `https://discord.com` as an OAuth2 Redirect in the Developer Portal, then open this URL in your browser (replace `YOUR_APP_ID`) and click Authorize:
+```
+   https://discord.com/oauth2/authorize?client_id=YOUR_APP_ID&response_type=token&redirect_uri=https%3A%2F%2Fdiscord.com&scope=openid+sdk.social_layer
+```
+   Afterwards your app must appear in Discord → Settings → **Authorized Apps** with all 7 permissions — this is **required**, otherwise every update fails with `403 Invalid OAuth2 access token`.
+4. Add the widget to your profile (see the guide's last chapter).
+ 
+> ℹ️ **About the guide's "Applying an Application Identity" chapter:** you can **skip downloading the Widget Identity Creator app** — this script performs the same identity request automatically on every refresh cycle, with real data instead of sample data. The first successful `npm start` (after authorizing in step 3) issues the identity for you, which is what clears the *"Your game stats are still syncing. Keep playing!"* message.
+>
+> 🔒 In line with the guide's warning about third-party services asking for bot tokens: this script runs **locally on your machine** — your bot token stays in your `.env` and is only ever sent directly to the official Discord API.
+ 
 > ⚠️ Since June 4th, Discord restricts widgets to the **application owner** — only your own account can display your app's widget.
-
+ 
 ---
 
 ## 🚀 Installation & Running
