@@ -110,7 +110,7 @@ Follow [Chloe Cinders' guide](https://chloecinders.com/blog/discord-widgets) to:
    <details>
      <summary>✨ **Like This**</summary>
      <br>
-     <img src="assets/media07.gif"/>
+     <img src="assets/media08.PNG"/>
    </details>
 4. Add the widget to your profile (see the guide's last chapter).
  
