@@ -248,6 +248,7 @@ And this what it should looks like with the `CONTAINED` design from disc
 ![image05](assets/media05.gif)
 
 > You can also have my other widget that tracks your `Achievements` from Steam for your current or last played game!
+> This one is a lot simpler and to set up. Soon on my **[GitHub](https://github.com/tradenbnl)**
 
 ![image08](assets/media08.gif)
 
