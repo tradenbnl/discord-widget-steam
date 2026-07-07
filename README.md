@@ -25,7 +25,7 @@ It runs in a loop, pulls fresh data from the Steam Web API (plus your public pro
 
 ---
 
-## 🧩 Widget Data Fields
+## 🧩 Widget Data Fields <div id="DataFields"></div>
 
 Create these **Data Fields** in the Discord Developer Portal widget editor (Games → Widget → your widget). Names must match **exactly**. Set each field's *Value Type* to **User Data**.
 
