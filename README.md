@@ -138,13 +138,13 @@ Follow [Chloe Cinders' guide](https://chloecinders.com/blog/discord-widgets) to:
 
 ```bash
 # 1. Clone
-git clone https://github.com/<you>/discord-widget-steam.git
+git clone https://github.com/tradenbnl/discord-widget-steam.git
 cd discord-widget-steam
 
 # 2. Install dependencies
 npm install
 
-# 3. Configure credentials
+# 3. Configure credentials   Before this step, **OPEN 'env.example' AND ENTER YOUR KEYS / TOKENS!!**
 cp env.example .env      # on Windows: copy env.example .env
 #    ...then edit .env and fill in your keys
 
