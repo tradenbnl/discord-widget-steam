@@ -6,6 +6,19 @@ It runs in a loop, pulls fresh data from the Steam Web API (plus your public pro
 
 > Based on [Chloe Cinders' widget guide](https://chloecinders.com/blog/discord-widgets) and the polling approach from [ezxmora/discord-widget](https://github.com/ezxmora/discord-widget).
 
+(assets/media06.gif)
+
+## ✨ Showcase
+
+![](assets/media01.gif)
+
+![](assets/media02.gif)
+
+![](assets/media04.gif)
+
+![](assets/media05.gif)
+
+
 ---
 
 ## ✨ Features
