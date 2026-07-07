@@ -240,14 +240,15 @@ pm2 delete discord-widget2     # remove from pm2 entirely (then pm2 save to pers
 **Congrats you're now done if you did everything RIGHT!!**
 
 This is what it should looks like with the `HERO` design from disc
+
 ![image04](assets/media04.gif)
 
-
 And this what it should looks like with the `CONTAINED` design from disc
+
 ![image05](assets/media05.gif)
 
-
 > You can also have my other widget that tracks your `Achievements` from Steam for your current or last played game!
+
 ![image08](assets/media08.gif)
 
 
