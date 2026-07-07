@@ -107,6 +107,11 @@ Follow [Chloe Cinders' guide](https://chloecinders.com/blog/discord-widgets) to:
    https://discord.com/oauth2/authorize?client_id=YOUR_APP_ID&response_type=token&redirect_uri=https%3A%2F%2Fdiscord.com&scope=openid+sdk.social_layer
 ```
    Afterwards your app must appear in Discord → Settings → **Authorized Apps** with all 7 permissions — this is **required**, otherwise every update fails with `403 Invalid OAuth2 access token`.
+   <details>
+     <summary>✨ **Like This**</summary>
+     <br>
+     <img src="assets/media08">
+   </details>
 4. Add the widget to your profile (see the guide's last chapter).
  
 > ℹ️ **About the guide's "Applying an Application Identity" chapter:** you can **skip downloading the Widget Identity Creator app** — this script performs the same identity request automatically on every refresh cycle, with real data instead of sample data. The first successful `npm start` (after authorizing in step 3) issues the identity for you, which is what clears the *"Your game stats are still syncing. Keep playing!"* message.
