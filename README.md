@@ -79,7 +79,7 @@ Create these **Data Fields** in the Discord Developer Portal widget editor (Game
 | SteamGridDB API key | <https://www.steamgriddb.com/profile/preferences/api> | Optional (hi-res game icons; falls back to Steam's 32×32 icons) |
 
 - **Steam account**: <https://store.steampowered.com/account/> Log into your Steam account and go to **Account Details**. There you should be able to see your SteamID64 under your Name
-![how to get to your steam's account](/assets/Recording 2026-07-06 at 22.21.40.gif)
+![how to access your steamID > Open Steam > Your Profile > Account Details](assets/media06.gif)
   
 
 
