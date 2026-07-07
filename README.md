@@ -101,7 +101,7 @@ For game data to be available: Steam → your profile → **Edit Profile → Pri
  
 Follow [Chloe Cinders' guide](https://chloecinders.com/blog/discord-widgets) to:
 1. Create the application and enable the **Social SDK**.
-2. Build the widget in the editor and add the [Data Fields](#-widget-data-fields) from the table above. **Save AND Publish.**
+2. Build the widget in the editor and add the Data Fields from the [table above](#-widget-data-fields). **Save AND Publish.**
 3. Authorize your app: add `https://discord.com` as an OAuth2 Redirect in the Developer Portal, then open this URL in your browser (replace `YOUR_APP_ID`) and click Authorize:
 ```
    https://discord.com/oauth2/authorize?client_id=YOUR_APP_ID&response_type=token&redirect_uri=https%3A%2F%2Fdiscord.com&scope=openid+sdk.social_layer
