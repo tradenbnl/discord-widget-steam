@@ -10,14 +10,10 @@ It runs in a loop, pulls fresh data from the Steam Web API (plus your public pro
 
 ## ✨ Showcase
 
-![](assets/media01.gif)
-
-![](assets/media02.gif)
-
-![](assets/media04.gif)
-
-![](assets/media05.gif)
-
+<img src="assets/media01.gif" style="max-width: 24.5%; height: auto;">
+<img src="assets/media02.gif" style="max-width: 24.5%; height: auto;">
+<img src="assets/media04.gif" style="max-width: 24.5%; height: auto;">
+<img src="assets/media05.gif" style="max-width: 24.5%; height: auto;">
 
 ---
 
