@@ -72,13 +72,14 @@ Create these **Data Fields** in the Discord Developer Portal widget editor (Game
 | Key | Where to get it | Required |
 | --- | --- | --- |
 | Steam Web API key | <https://steamcommunity.com/dev/apikey> | ✅ |
-| SteamID64 (17 digits) | <https://steamid.io> (paste your steam profile URL) | ✅ |
+| SteamID64 (17 digits) | <https://steamid.io> (paste your steam profile URL) 2nd method below this | ✅ |
 | Discord Application ID | [Developer Portal](https://discord.com/developers/applications) → your app | ✅ |
 | Discord User ID | Discord → Settings → Advanced → Developer Mode → right-click yourself → Copy User ID | ✅ |
 | Discord Bot Token | Developer Portal → your app → Bot → Reset Token | ✅ |
 | SteamGridDB API key | <https://www.steamgriddb.com/profile/preferences/api> | Optional (hi-res game icons; falls back to Steam's 32×32 icons) |
 
-- **Steam account**: <https://store.steampowered.com/account/> Log into your Steam account and go to **Account Details**. There you should be able to see your SteamID64 under your Name
+- **Steam account**: <https://store.steampowered.com/account/> Log into your Steam account and go to **Account Details**.
+There you should be able to see your SteamID64 under your Name. Copy those number at SteamID
 ![how to access your steamID > Open Steam > Your Profile > Account Details](assets/media06.gif)
   
 
