@@ -93,7 +93,7 @@ For game data to be available: Steam → your profile → **Edit Profile → Pri
 <details>
   <summary>✨ Hint</summary>
   <br>
-  <img src="assets/media07.gif" width="500"/>
+  <img src="assets/media07.gif" width="800"/>
 </details>
 
 
