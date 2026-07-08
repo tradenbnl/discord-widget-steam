@@ -21,7 +21,8 @@ It runs in a loop, pulls fresh data from the Steam Web API (plus your public pro
   </tr>
 </table>
 
-**FIX FOR WEIRD BORDER IMPLEMENTED!!** Look at first image top-left! too lazy to re-do the gifs!
+`FIX FOR WEIRD BORDER IMPLEMENTED!! Look at first image top-left!`
+`too lazy to re-do the gifs!`
 ---
 
 ## ✨ Features
