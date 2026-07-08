@@ -1,32 +1,33 @@
 // src/avatarIcon.js
 //
-// Assembles the composite avatar (photo + frame) with full diagnostics:
+// Orquesta el avatar compuesto (foto + frame) con diagnóstico completo:
 //
-//   1. Requests the frame and animated avatar CANDIDATES from Steam.
-//   2. Download all of them and determine which one is animated based on its CONTENT
-//      (Steam does not specify whether image_large or image_small is the APNG).
-//   3. Compose (avatarCompositor) while verifying the number of frames.
-//   4. Save a local copy in data/avatar-preview.{png|gif} so
-//      you can open it and visually check if the generated file animates.
-//      -> If the local preview animates but Discord doesn’t: a
-//         Discord/upload issue. If the preview doesn’t animate: our issue,
-//         and the log indicates which step caused it.
-//   5. Upload to Catbox and cache { signature, url } so you don’t have to repeat
-//      the work if nothing has changed.
+//   1. Pide a Steam los CANDIDATOS de frame y avatar animado.
+//   2. Descarga todos y elige por CONTENIDO cuál es el animado
+//      (Steam no documenta si image_large o image_small es la APNG).
+//   3. Compone (avatarCompositor) verificando el nº de frames.
+//   4. Guarda una copia local en data/avatar-preview.{png|gif} para
+//      poder abrirla y comprobar A OJO si el archivo generado anima.
+//      -> Si el preview local anima pero Discord no: problema de
+//         Discord/upload. Si el preview no anima: problema nuestro,
+//         y el log dice en qué eslabón.
+//   5. Sube a Catbox y cachea { signature, url } para no repetir
+//      trabajo si nada cambió.
 //
-// The entire process is logged with the prefix [avatar] so you can
-// paste the log for me and see exactly what happened.
+// Todo el proceso se loguea con el prefijo [avatar] para que puedas
+// pegarme el log y ver exactamente qué pasó.
 
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
 import { getEquippedProfileItems } from "./steamAvatar.js";
 import { fetchBestAsset, composeFromBuffers, detectKind } from "./avatarCompositor.js";
+import { applyRounding } from "./imageRounder.js";
 import { uploadImage } from "./imageUploader.js";
 
 const CACHE_PATH = path.resolve("data/avatar-icon.json");
 const PREVIEW_BASE = path.resolve("data/avatar-preview");
-const CACHE_VERSION = 4; // v4: candidate selection based on content + verification
+const CACHE_VERSION = 6; // v6: esquinas redondeadas D.W.I.F. (imageRounder)
 
 const log = (msg) => console.log(`  [avatar] ${msg}`);
 
@@ -51,7 +52,7 @@ function signature(parts) {
 }
 
 /**
- * @returns {Promise<string>} Final avatar URL (composite or flat).
+ * @returns {Promise<string>} URL final del avatar (compuesto o plano).
  */
 export async function resolveComposedAvatarUrl(apiKey, steamId, avatarFullUrl) {
   const { frameCandidates, avatarCandidates } = await getEquippedProfileItems(
@@ -61,11 +62,11 @@ export async function resolveComposedAvatarUrl(apiKey, steamId, avatarFullUrl) {
 
   log(`frame candidates: ${frameCandidates.length}, animated-avatar candidates: ${avatarCandidates.length}`);
 
-  // Select the ACTUALLY animated frame, if it exists (based on content).
+  // Elegir el frame REALMENTE animado si existe (por contenido).
   const frameAsset =
     frameCandidates.length > 0 ? await fetchBestAsset(frameCandidates, log) : null;
 
-  // Default avatar: the animated avatar, if available; otherwise, the regular photo.
+  // Avatar base: el animado equipado si existe; si no, la foto normal.
   let avatarAsset =
     avatarCandidates.length > 0 ? await fetchBestAsset(avatarCandidates, log) : null;
 
@@ -77,7 +78,7 @@ export async function resolveComposedAvatarUrl(apiKey, steamId, avatarFullUrl) {
     log(`using avatarfull -> ${avatarAsset.kind}`);
   }
 
-  // No frame and a static avatar: nothing to compose.
+  // Sin frame y avatar estático: nada que componer.
   if (!frameAsset && avatarAsset.kind === "static") {
     log("no frame equipped and static avatar -> using plain avatarfull URL");
     return avatarFullUrl;
@@ -90,9 +91,16 @@ export async function resolveComposedAvatarUrl(apiKey, steamId, avatarFullUrl) {
     return cached.url;
   }
 
-  const { buffer, ext, frames } = await composeFromBuffers(avatarAsset, frameAsset, log);
+  const composed = await composeFromBuffers(avatarAsset, frameAsset, log);
 
-  // Local preview for manual inspection.
+  // Esquinas redondeadas estilo D.W.I.F. (toggle en src/imageRounder.js).
+  const { buffer, ext } = await applyRounding(
+    { buffer: composed.buffer, ext: composed.ext },
+    log
+  );
+  const frames = composed.frames;
+
+  // Preview local para inspección manual.
   await mkdir(path.dirname(PREVIEW_BASE), { recursive: true });
   const previewPath = `${PREVIEW_BASE}.${ext}`;
   await writeFile(previewPath, buffer);

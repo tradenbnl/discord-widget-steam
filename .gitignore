@@ -3,4 +3,5 @@ node_modules/
 data/
 ignore/
 README.es.md
-/assets/tutorial.mp4
+assets/tutorial.mp4
+src/imageRounderSAFE.js
