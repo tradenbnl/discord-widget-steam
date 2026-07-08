@@ -2,7 +2,7 @@
 //
 // Uploads an image (PNG or GIF) to Catbox.moe and returns the public URL.
 // Catbox: no API key, no account, permanent uploads. Node 18+ includes
-// native FormData/Blob support.
+// native FormData/Blob support. IS PERFECT AAAAAAAAAAAAHH
 
 const CATBOX_ENDPOINT = "https://catbox.moe/user/api.php";
 

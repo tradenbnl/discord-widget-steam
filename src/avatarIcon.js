@@ -1,21 +1,19 @@
 // src/avatarIcon.js
 //
-// Orquesta el avatar compuesto (foto + frame) con diagnóstico completo:
+// Generates the composite avatar (photo + frame) with a complete diagnosis:
 //
-//   1. Pide a Steam los CANDIDATOS de frame y avatar animado.
-//   2. Descarga todos y elige por CONTENIDO cuál es el animado
-//      (Steam no documenta si image_large o image_small es la APNG).
-//   3. Compone (avatarCompositor) verificando el nº de frames.
-//   4. Guarda una copia local en data/avatar-preview.{png|gif} para
-//      poder abrirla y comprobar A OJO si el archivo generado anima.
-//      -> Si el preview local anima pero Discord no: problema de
-//         Discord/upload. Si el preview no anima: problema nuestro,
-//         y el log dice en qué eslabón.
-//   5. Sube a Catbox y cachea { signature, url } para no repetir
-//      trabajo si nada cambió.
+//   1. Requests the frame and animated avatar CANDIDATES from Steam.
+//   2. Downloads all of them and selects the animated one based on CONTENT
+//      (Steam does not specify whether image_large or image_small is the APNG).
+//   3. Compose (avatarCompositor) while verifying the number of frames.
+//   4. Save a local copy in data/avatar-preview.{png|gif} so
+//      you can open it and visually check if the generated file animates.
+//      -> If the local preview animates but Discord doesn’t: a problem with
+//         Discord/upload. If the preview doesn’t animate: our problem,
+//         and the log will indicate where the issue lies.
+//   5. Upload to Catbox and cache { signature, url } to avoid repeating
+//      the work if nothing has changed.
 //
-// Todo el proceso se loguea con el prefijo [avatar] para que puedas
-// pegarme el log y ver exactamente qué pasó.
 
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
@@ -52,7 +50,7 @@ function signature(parts) {
 }
 
 /**
- * @returns {Promise<string>} URL final del avatar (compuesto o plano).
+ * @returns {Promise<string>} Final URL of the avatar (composite or flat).
  */
 export async function resolveComposedAvatarUrl(apiKey, steamId, avatarFullUrl) {
   const { frameCandidates, avatarCandidates } = await getEquippedProfileItems(
@@ -62,11 +60,11 @@ export async function resolveComposedAvatarUrl(apiKey, steamId, avatarFullUrl) {
 
   log(`frame candidates: ${frameCandidates.length}, animated-avatar candidates: ${avatarCandidates.length}`);
 
-  // Elegir el frame REALMENTE animado si existe (por contenido).
+  // Select the ACTUALLY animated frame, if it exists (based on content).
   const frameAsset =
     frameCandidates.length > 0 ? await fetchBestAsset(frameCandidates, log) : null;
 
-  // Avatar base: el animado equipado si existe; si no, la foto normal.
+  // Default avatar: the animated avatar, if available; otherwise, the regular photo.
   let avatarAsset =
     avatarCandidates.length > 0 ? await fetchBestAsset(avatarCandidates, log) : null;
 
@@ -78,7 +76,7 @@ export async function resolveComposedAvatarUrl(apiKey, steamId, avatarFullUrl) {
     log(`using avatarfull -> ${avatarAsset.kind}`);
   }
 
-  // Sin frame y avatar estático: nada que componer.
+  // No frame and a static avatar: nothing to compose.
   if (!frameAsset && avatarAsset.kind === "static") {
     log("no frame equipped and static avatar -> using plain avatarfull URL");
     return avatarFullUrl;
@@ -93,14 +91,14 @@ export async function resolveComposedAvatarUrl(apiKey, steamId, avatarFullUrl) {
 
   const composed = await composeFromBuffers(avatarAsset, frameAsset, log);
 
-  // Esquinas redondeadas estilo D.W.I.F. (toggle en src/imageRounder.js).
+  // D.W.I.F.-style rounded corners (toggle in src/imageRounder.js).
   const { buffer, ext } = await applyRounding(
     { buffer: composed.buffer, ext: composed.ext },
     log
   );
   const frames = composed.frames;
 
-  // Preview local para inspección manual.
+  // local prview 
   await mkdir(path.dirname(PREVIEW_BASE), { recursive: true });
   const previewPath = `${PREVIEW_BASE}.${ext}`;
   await writeFile(previewPath, buffer);

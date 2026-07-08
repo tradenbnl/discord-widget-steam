@@ -3,14 +3,6 @@
 // Creates the level image in the Steam style:
 //   - Background ring/shield with a TRANSPARENT INTERIOR
 //   - Level number centered above it
-//
-// The number’s centering does NOT depend on SVG baselines (which librsvg
-// renders inconsistently). Instead:
-//   1. We render the number in its own PNG, “cropped” to the exact
-//      size of the glyphs using .trim().
-//   2. We composite it onto the background using `gravity: ‘centre’`, which geometrically centers
-//      that layer within the canvas—perfectly vertical
-//      and horizontal, regardless of the font.
 
 import sharp from "sharp";
 
@@ -18,8 +10,6 @@ const OUTPUT_SIZE = 256;
 const SPRITE_CELL = 32;
 const FONT_STACK = "Arial, DejaVu Sans, sans-serif";
 
-// SVG containing only the number, on a large canvas. Then we crop it
-// using .trim() to keep only the text box.
 function buildNumberSvg(level) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${OUTPUT_SIZE}" height="${OUTPUT_SIZE}">
@@ -50,7 +40,7 @@ async function renderSvgToPng(svg) {
 async function renderTrimmedNumber(level) {
   return sharp(Buffer.from(buildNumberSvg(level)))
     .png()
-    .trim() // removes the transparent padding around the text
+    .trim()
     .toBuffer();
 }
 

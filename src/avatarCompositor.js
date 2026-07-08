@@ -11,56 +11,44 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 // ============================ CONFIG ==================================
-// Ajustes editables. Después de cambiar cualquiera, sube CACHE_VERSION
-// en src/avatarIcon.js (o borra data/avatar-icon.json) para regenerar.
+// Editable settings. After changing any of them, increase CACHE_VERSION
+// in src/avatarIcon.js (or delete data/avatar-icon.json) to regenerate.
 
-// Tamaño del lienzo final en píxeles (cuadrado). Más grande = más
-// calidad y menos pixelado en los bordes del frame, a costa de un GIF
-// más pesado. 512 es un buen balance (Discord lo muestra pequeño).
+// Final canvas size in pixels (square). Larger = higher
+// quality and less pixelation at the edges of the frame, at the cost of a
+// larger GIF. 512 is a good balance
 const SIZE = 512;
 
-// Qué fracción del lienzo ocupa TU FOTO en el centro. El frame siempre
-// llena el lienzo completo, así que:
-//   - BAJAR este valor (p.ej. 0.55) => foto más pequeña => el frame se
-//     ve MÁS GRANDE/grueso alrededor.
-//   - SUBIRLO (p.ej. 0.70) => foto más grande => el frame se ve MÁS
-//     PEQUEÑO/fino (y puede tapar los bordes de la foto).
-// El perfil real de Steam usa aproximadamente 0.62.
+// Qué fracción del lienzo ocupa TU FOTO en el centro.
 const AVATAR_SCALE = 1.0;
 
-// Escala del AVATAR FRAME de forma independiente (1.0 = llena el
-// lienzo completo, como Steam).
-//   - BAJAR (p.ej. 0.90) => frame más pequeño, centrado, dejando aire
-//     transparente alrededor.
-//   - SUBIR (p.ej. 1.15) => frame más grande; lo que sobresalga del
-//     lienzo se recorta por los bordes.
+// Scale the AVATAR FRAME independently (1.0 = fills the
+// entire canvas, like Steam).
 const FRAME_SCALE = 1.0;
 
-// Frames por segundo del GIF final. Más fps = animación más fluida
-// pero archivo más pesado. 20 va bien para Discord.
+// Frames per second for the final GIF. More fps = smoother animation
+// but a larger file. 20 works well for Discord.
 const FPS = 20;
 
-// Umbral de transparencia (0-255) al cuantizar el GIF. Los píxeles con
-// alpha POR DEBAJO de este valor se vuelven totalmente transparentes.
-// El GIF solo soporta transparencia de 1 bit, así que los bordes
-// suaves/semitransparentes de los frames se pierden si el umbral es
-// alto. Con 128 se "comían" los bordes; 64 conserva mucho más detalle.
-// Si aún ves bordes comidos, baja a 32 (riesgo: leve halo oscuro).
+// Transparency threshold (0-255) when quantizing the GIF. Pixels with
+// alpha values BELOW this threshold become completely transparent.
+// GIFs only support 1-bit transparency, so the
+// soft/semi-transparent edges of the frames are lost if the threshold is
+// too high. At 128, the edges were “eaten up”; 64 preserves much more detail.
+// If you still see edges being “eaten up,” lower it to 32 (risk: slight dark halo).
 const ALPHA_THRESHOLD = 64;
 
-// Duración máxima del GIF final, en segundos (tope de seguridad para
-// avatares con ciclos larguísimos; limita el peso del archivo).
+// Maximum duration of the final GIF, in seconds
 const MAX_ANIM_SECONDS = 8;
+
 // ======================================================================
 
 const AVATAR_PX = Math.round(SIZE * AVATAR_SCALE);
-// Si la foto es mayor que el lienzo (AVATAR_SCALE > 1) se recorta a
-// SIZE, así que el offset de colocación nunca es negativo.
 const AVATAR_OFFSET = Math.max(0, Math.round((SIZE - AVATAR_PX) / 2));
 const FRAME_PX = Math.round(SIZE * FRAME_SCALE);
 const FFMPEG_BIN = process.env.FFMPEG_PATH || "ffmpeg";
 
-// ---- Detección / medición de formatos por contenido ------------------
+// ---- Content-Based Format Detection/Measurement ------------------
 
 export function detectKind(buf) {
   if (!buf || buf.length < 16) return "static";
@@ -76,11 +64,6 @@ export function detectKind(buf) {
   return "static";
 }
 
-// Los bloques Graphic Control Extension tienen estructura FIJA:
-//   0x21 0xF9 0x04 <flags> <delayLo> <delayHi> <transparentIdx> 0x00
-// Validar el byte de tamaño (0x04) y el terminador (0x00) evita falsos
-// positivos del patrón "21 F9" apareciendo dentro de datos de imagen
-// comprimidos (que inflaban el conteo y la duración).
 function isGceAt(buf, i) {
   return (
     buf[i] === 0x21 &&
@@ -98,13 +81,13 @@ export function countGifFrames(buf) {
   return count;
 }
 
-// Duración total de un GIF en ms, sumando los delays de cada frame.
+// Total duration of a GIF in ms, calculated by adding the delays for each frame.
 export function gifDurationMs(buf) {
   let total = 0;
   for (let i = 0; i < buf.length - 7; i++) {
     if (isGceAt(buf, i)) {
-      const delay = (buf[i + 4] | (buf[i + 5] << 8)) * 10; // centiseg -> ms
-      total += delay > 0 ? delay : 1000 / FPS; // delay 0 => asumir 1 frame a FPS
+      const delay = (buf[i + 4] | (buf[i + 5] << 8)) * 10; 
+      total += delay > 0 ? delay : 1000 / FPS; // 
     }
   }
   return total;
@@ -130,7 +113,7 @@ export function checkFfmpeg() {
   });
 }
 
-// ---- Selección de candidato por contenido ----------------------------
+// ---- Candidate Selection Based on Content ----------------------------
 
 async function fetchBuffer(url) {
   const res = await fetch(url);
@@ -189,10 +172,7 @@ async function normalizeToGif(dir, name, buf, kind) {
 
 // ---- Capas estáticas (sharp) -----------------------------------------
 
-// Devuelve la foto en un lienzo SIZE x SIZE, centrada. Soporta
-// AVATAR_SCALE > 1: la foto se escala más grande que el lienzo y se
-// recorta el centro (sharp no permite componer una capa mayor que la
-// base, así que hay que recortar ANTES de componer).
+// Returns the photo in a SIZE x SIZE canvas, centered.
 async function makeCenteredAvatarPng(avatarBuf) {
   let avatar = await sharp(avatarBuf, { animated: false })
     .resize(AVATAR_PX, AVATAR_PX, { fit: "cover" })
@@ -207,7 +187,7 @@ async function makeCenteredAvatarPng(avatarBuf) {
         .png()
         .toBuffer();
     }
-    return avatar; // la foto llena el lienzo completo
+    return avatar;
   }
 
   return sharp({
@@ -218,8 +198,8 @@ async function makeCenteredAvatarPng(avatarBuf) {
     .toBuffer();
 }
 
-// Devuelve el frame en un lienzo SIZE x SIZE: escalado a FRAME_PX y
-// centrado. Si FRAME_SCALE > 1, el sobrante se recorta por los bordes.
+// Returns the frame on a SIZE x SIZE canvas: scaled to FRAME_PX and
+// centered. If FRAME_SCALE > 1, the excess is cropped from the edges.
 async function frameToCanvasPng(frameBuf) {
   let frame = await sharp(frameBuf, { animated: false })
     .resize(FRAME_PX, FRAME_PX, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
@@ -256,17 +236,14 @@ async function composeStaticPng(avatarBuf, frameBuf) {
   return sharp(base).composite([{ input: frame, top: 0, left: 0 }]).png().toBuffer();
 }
 
-// ---- Composición animada ---------------------------------------------
+// ---- Animated composition ---------------------------------------------
 
-// Escalado con lanczos (bordes más nítidos que el bilinear por defecto).
-// Si AVATAR_PX > SIZE, tras escalar se recorta el centro a SIZE para
-// que el overlay nunca exceda el lienzo (offset negativo evitado).
+
 const SCALE_AVATAR =
   AVATAR_PX > SIZE
     ? `scale=${AVATAR_PX}:${AVATAR_PX}:force_original_aspect_ratio=increase:flags=lanczos,crop=${SIZE}:${SIZE}`
     : `scale=${AVATAR_PX}:${AVATAR_PX}:force_original_aspect_ratio=increase:flags=lanczos,crop=${AVATAR_PX}:${AVATAR_PX}`;
-// Escala el frame a FRAME_PX y lo deja en un lienzo SIZE x SIZE:
-// pad transparente centrado si es menor, crop centrado si es mayor.
+
 const SCALE_FRAME =
   FRAME_PX === SIZE
     ? `scale=${SIZE}:${SIZE}:flags=lanczos`
@@ -278,7 +255,7 @@ async function composeAnimated({ dir, avatarBuf, frameBuf, avatarGifPath, frameG
   const outPath = path.join(dir, "out.gif");
 
   if (!avatarGifPath && frameGifPath) {
-    // A: avatar estático + frame animado. El frame define la duración.
+    // A: static avatar + animated frame. The frame defines the duration.
     const basePath = path.join(dir, "base.png");
     await writeFile(basePath, await makeCenteredAvatarPng(avatarBuf));
     await runFfmpeg([
@@ -293,8 +270,8 @@ async function composeAnimated({ dir, avatarBuf, frameBuf, avatarGifPath, frameG
   }
 
   if (avatarGifPath && !frameGifPath) {
-    // B: avatar animado + frame estático/sin frame. El avatar define
-    // la duración (su ciclo completo se conserva).
+    // B: animated avatar + static frame/no frame. The avatar defines
+    // the duration
     const overlayPath = path.join(dir, "frame.png");
     await writeFile(
       overlayPath,
@@ -314,29 +291,12 @@ async function composeAnimated({ dir, avatarBuf, frameBuf, avatarGifPath, frameG
     return readFile(outPath);
   }
 
-  // C: AMBOS animados.
-  // FIX del bug "solo 2 frames": antes se cortaba en el ciclo del input
-  // MÁS CORTO (shortest=1), así que un frame con ciclo de 0.1s cortaba
-  // un avatar de 3s a 2 frames. Ahora:
-  //   - medimos la duración de ambos GIFs ya normalizados,
-  //   - loopeamos ambos infinitamente (-ignore_loop 0),
-  //   - y cortamos con -t en la duración del MÁS LARGO (con tope),
-  // de modo que la animación más larga completa su ciclo y la corta
-  // simplemente se repite.
+  // C: BOTH animated.
   const [avBuf, frBuf] = await Promise.all([readFile(avatarGifPath), readFile(frameGifPath)]);
   const durA = gifDurationMs(avBuf);
   const durF = gifDurationMs(frBuf);
   const targetSec = Math.min(Math.max(durA, durF) / 1000, MAX_ANIM_SECONDS);
 
-  // IMPORTANTE: el "-t" va como opción DE ENTRADA (antes de cada -i).
-  // palettegen necesita ver el EOF para emitir la paleta; con inputs
-  // infinitos (-ignore_loop 0) y un -t solo de salida, el filtro nunca
-  // termina y ffmpeg se queda sin memoria. Truncar cada INPUT en el
-  // tiempo objetivo garantiza el EOF.
-  // Tres fuentes deben quedar ACOTADAS para que palettegen reciba el
-  // EOF (si alguna es infinita, ffmpeg acumula frames sin fin y muere
-  // por memoria): los dos GIFs con "-t" DE ENTRADA, y el color de
-  // fondo con ":d=" en el filtro.
   const t = targetSec.toFixed(3);
   await runFfmpeg([
     "-y",
@@ -354,9 +314,9 @@ async function composeAnimated({ dir, avatarBuf, frameBuf, avatarGifPath, frameG
 }
 
 /**
- * Compone avatar + frame desde buffers ya elegidos con fetchBestAsset.
- * Devuelve { buffer, ext, frames }. Lanza error si se esperaba
- * animación y el resultado salió de 1 frame.
+ * Composes an avatar and frame from buffers previously selected using fetchBestAsset.
+ * Returns { buffer, ext, frames }. Throws an error if an animation was expected
+ * and the result consists of only 1 frame.
  */
 export async function composeFromBuffers(avatarAsset, frameAsset, log = () => {}) {
   const avatarBuf = avatarAsset.buffer;

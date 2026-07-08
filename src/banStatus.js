@@ -3,7 +3,7 @@
 // Parses the response from GetPlayerBans and returns:
 //   - a status message (“Clean,” “VAC Banned,” etc.)
 //   - a PNG with a representative icon (Steam doesn’t have an official one,
-//     so we generate it: green = clean account, red = banned).
+//     so I generate it: green = clean account, red = banned).
 //
 // The PNG is then uploaded to Catbox (just like the level icon) to
 // provide a usable URL for the widget.
@@ -32,7 +32,7 @@ export function describeBanStatus(bans) {
     return { label: "Clean (No bans)", clean: true };
   }
 
-  // We build a list of the types of bans that exist.
+  // list of the types of bans that exist.
   const parts = [];
   if (vac) {
     const n = bans.NumberOfVACBans || 0;
