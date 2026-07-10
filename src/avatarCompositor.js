@@ -32,10 +32,6 @@ const FPS = 20;
 
 // Transparency threshold (0-255) when quantizing the GIF. Pixels with
 // alpha values BELOW this threshold become completely transparent.
-// GIFs only support 1-bit transparency, so the
-// soft/semi-transparent edges of the frames are lost if the threshold is
-// too high. At 128, the edges were “eaten up”; 64 preserves much more detail.
-// If you still see edges being “eaten up,” lower it to 32 (risk: slight dark halo).
 const ALPHA_THRESHOLD = 64;
 
 // Maximum duration of the final GIF, in seconds

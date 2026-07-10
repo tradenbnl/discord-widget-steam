@@ -13,7 +13,7 @@ import path from "node:path";
 
 export const ROUNDED_CORNERS_ENABLED = true; //Rounded borders true or false
 
-const RADIUS_RATIO = 0.05; // Radius for borders
+const RADIUS_RATIO = 0.15; // Radius for borders
 const RADIUS_PX = 0;
 
 // PUSH DOWN: How many pixels the image is moved downward.
