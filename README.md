@@ -299,11 +299,8 @@ discord-widget-steam/
     └── discordWidget.js        # payload builder + PATCH to Discord identity endpoint
 ```
 
-Runtime artifacts (`data/` caches and previews, `node_modules/`, your `.env`) are git-ignored.
-
 ---
 
 ## ⚠️ Security
 
-- **Never commit your `.env`** — your Discord bot token gives full control of your bot.
 - Composited images are uploaded to Catbox anonymously and their URLs are public (they're just your Steam avatar/level/ban icons). Swap `src/imageUploader.js` for your own host (S3, imgbb, etc.) if you prefer.
