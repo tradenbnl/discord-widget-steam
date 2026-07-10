@@ -257,7 +257,7 @@ And this what it should looks like with the `CONTAINED` design from disc
 
 <div align="center">
   
- This one is a lot simpler and to set up. Soon on my **[GitHub](https://github.com/tradenbnl)**
+ This one is a lot simpler and to set up. Soon on my **[GitHub](https://github.com/tradenbnl/discord-widget-steam-achievements)**
  
 </div>
 
