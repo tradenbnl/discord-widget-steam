@@ -1,8 +1,8 @@
 // src/avatarCompositor.js
 //
-// Compone la foto de perfil (abajo) + avatar frame (encima) preservando
-// la animación. Ver el bloque CONFIG justo debajo para los ajustes que
-// puedes tocar (tamaño, escala del frame, calidad de bordes, fps).
+// Combines the profile photo (below) and the avatar frame (above) while preserving
+// the animation. See the CONFIG block just below for the settings you
+// can adjust (size, frame scale, edge quality, fps). Any Image over 20MB Discord wont take!!!
 
 import sharp from "sharp";
 import { spawn } from "node:child_process";
@@ -19,7 +19,7 @@ import path from "node:path";
 // larger GIF. 512 is a good balance
 const SIZE = 512;
 
-// Qué fracción del lienzo ocupa TU FOTO en el centro.
+// What fraction of the canvas does YOUR PHOTO occupy when centered?
 const AVATAR_SCALE = 1.0;
 
 // Scale the AVATAR FRAME independently (1.0 = fills the
