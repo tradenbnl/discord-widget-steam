@@ -175,10 +175,11 @@ STEAM_API_KEY=            # required
 STEAM_ID=                 # required — SteamID64
 DISCORD_APP_ID=           # required
 DISCORD_USER_ID=          # required
+IMGBB_API_KEY=            # required - Make a free acc here [IMGBB](https://api.imgbb.com) new host
 DISCORD_BOT_TOKEN=        # required — keep it secret!
 DISCORD_WIDGET_USERNAME=  # optional — widget title; defaults to Steam name
-STEAMGRIDDB_API_KEY=      # optional — hi-res game icons - I recommend you to set this up
-FFMPEG_PATH=              # optional — full path to ffmpeg if not on PATH
+STEAMGRIDDB_API_KEY=      # optional — hi-res game icons - I recommend you to set this up!!
+FFMPEG_PATH=              # optional — full path to ffmpeg if not on PATH 
 ```
 
 ### Running 24/7 with pm2 (Windows / PowerShell)  Recommended but **Optional**
