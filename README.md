@@ -94,6 +94,7 @@ Create these **Data Fields** in the Discord Developer Portal widget editor (Game
 | Discord User ID | Discord → Settings → Advanced → Developer Mode → right-click yourself → Copy User ID | ✅ |
 | Discord Bot Token | Developer Portal → your app → Bot → Reset Token | ✅ |
 | SteamGridDB API key | <https://www.steamgriddb.com/profile/preferences/api> | Optional (hi-res game icons; falls back to Steam's 32×32 icons) |
+| IMGBB API Key | Make a free acc here [IMGBB](https://api.imgbb.com) new host |
 
 - **Steam account**: <https://store.steampowered.com/account/> Log into your Steam account and go to **Account Details**.
 There you should be able to see your SteamID64 under your Name. Copy those number at SteamID
@@ -147,7 +148,7 @@ cd discord-widget-steam
 npm install
 
 # 3. Configure credentials   Before this step, **OPEN 'env.example' AND ENTER YOUR KEYS / TOKENS!!**
-cp env.example .env      # on Windows: copy env.example .env
+cp env.example .env
 #    ...then edit .env and fill in your keys
 
 # 4. Run
@@ -175,7 +176,7 @@ STEAM_API_KEY=            # required
 STEAM_ID=                 # required — SteamID64
 DISCORD_APP_ID=           # required
 DISCORD_USER_ID=          # required
-IMGBB_API_KEY=            # required - Make a free acc here [IMGBB](https://api.imgbb.com) new host
+IMGBB_API_KEY=            # required Host for images
 DISCORD_BOT_TOKEN=        # required — keep it secret!
 DISCORD_WIDGET_USERNAME=  # optional — widget title; defaults to Steam name
 STEAMGRIDDB_API_KEY=      # optional — hi-res game icons - I recommend you to set this up!!
