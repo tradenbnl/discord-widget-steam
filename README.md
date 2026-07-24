@@ -37,7 +37,7 @@ It runs in a loop, pulls fresh data from the Steam Web API (plus your public pro
 - **Account age** — creation date ("6 years and 9 months"), and `Member Since: <year>`.
 - **Ban status** — `Ban Status: Clean (No bans)` or a breakdown (VAC / game / community / trade), with a generated green-check or red-X icon.
 - **Self-diagnosing avatar pipeline** — logs every step (`[avatar]` prefix), verifies the output GIF actually has multiple frames, saves a local preview to `data/avatar-preview.gif` so you can check the animation yourself, and checks ffmpeg availability at startup.
-- **Smart caching** — composed images (level icon, avatar, ban icons) are uploaded once to [Catbox](https://catbox.moe) and reused until the underlying data changes (cached in `data/*.json`). Restart-safe.
+- **Smart caching** — composed images (level icon, avatar, ban icons) are uploaded once to [imgbb](https://imgbb.com/) and reused until the underlying data changes (cached in `data/*.json`). Restart-safe.
 - **Auto refresh** — infinite loop, every **60 seconds**; one failed cycle never kills the process.
 
 ---
